@@ -45,7 +45,7 @@ function App() {
     } catch (error) {
       setIsLoading(false);
       setNewImages(false);
-      alter(error.code);
+      alert(error.code);
     }
   };
 
