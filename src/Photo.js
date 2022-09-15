@@ -12,7 +12,7 @@ const Photo = ({ photo }) => {
       profile_image: { medium },
     },
   } = photo;
-  console.log(photo);
+  // console.log(photo);
 
   const newPhoto = {
     url: regular,

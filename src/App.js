@@ -45,7 +45,7 @@ function App() {
     } catch (error) {
       setIsLoading(false);
       setNewImages(false);
-      console.log(error);
+      alter(error.code);
     }
   };
 
@@ -62,7 +62,6 @@ function App() {
     if (isLoading) return;
 
     setPage((oldPage) => oldPage + 1);
-    console.log('walla');
   }, [newImages]);
 
   useEffect(() => {
@@ -115,17 +114,3 @@ function App() {
 }
 
 export default App;
-
-//  useEffect(() => {
-//    const event = window.addEventListener('scroll', () => {
-//      if (
-//        !isLoading &&
-//        window.scrollY + window.innerHeight >= document.body.scrollHeight - 2
-//      ) {
-//        setPage((oldPage) => oldPage + 1);
-//        console.log('ola');
-//      }
-//    });
-
-//    return () => window.removeEventListener('scroll', event);
-//  }, []);
