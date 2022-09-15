@@ -143,6 +143,8 @@ Stock Photos
   width: 90vw;
   max-width: var(--max-width);
   margin: 0 auto;
+  display: flex;
+  justify-content: center;
 }
 .search-form {
   display: flex;
@@ -174,6 +176,7 @@ Stock Photos
 }
 .photos {
   padding: 5rem 0;
+  position: relative;
 }
 .photos-center {
   width: 90vw;
@@ -184,8 +187,8 @@ Stock Photos
 }
 .photo {
   height: 17.5rem;
-  position: relative;
   overflow: hidden;
+  position: relative;
 }
 .photo > a > img {
   width: 100%;
@@ -234,4 +237,35 @@ Stock Photos
 .loading {
   text-align: center;
   padding: 3rem;
+}
+
+.go-to-top {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  left: 85%;
+  top: 80%;
+  border: none;
+  background: var(--clr-grey-1);
+  font-size: 1.2rem;
+  color: rgb(108, 198, 239);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(17, 119, 227, 1);
+  animation: bounce 1.4s infinite;
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(1.1);
+  }
+  40% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1.1);
+  }
 }

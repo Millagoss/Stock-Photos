@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaArrowUp } from 'react-icons/fa';
 import Photo from './Photo';
 
 const clientId = `?client_id=${process.env.REACT_APP_ACCESS_KEY}`;
@@ -13,6 +13,7 @@ function App() {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [newImages, setNewImages] = useState(false);
+  const [toggleGoToTop, setToggleGoToTop] = useState(false);
 
   const checkInitValue = useRef(true);
 
@@ -69,6 +70,20 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const showArrow = window.addEventListener('scroll', () => {
+      if (window.scrollY >= 500) {
+        setToggleGoToTop(true);
+        return;
+      } else if (window.screenY < 500) {
+        setToggleGoToTop(false);
+        return;
+      }
+    });
+
+    return () => window.removeEventListener('scroll', showArrow);
+  }, []);
+
   const handleScroll = () => {
     if (window.scrollY + window.innerHeight >= document.body.scrollHeight - 2) {
       setNewImages(true);
@@ -85,13 +100,22 @@ function App() {
     setPage(1);
   };
 
+  const handleGoToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  // console.log(photos);
+  const inputText = searchTerm;
   return (
     <main>
       <section className='search'>
         <form className='search-form'>
           <input
             type='text'
-            placeholder='search'
+            placeholder='search for photos'
             className='form-input'
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -102,12 +126,25 @@ function App() {
         </form>
       </section>
       <section className='photos'>
-        <div className='photos-center'>
-          {photos.map((photo) => {
-            return <Photo key={photo.id} photo={photo} />;
-          })}
-        </div>
-        {isLoading && <h2 className='loading'>loading...</h2>}
+        {photos.length === 0 && !isLoading ? (
+          <h3 style={{ textAlign: 'center' }}>
+            nothing found for search "{inputText}"
+          </h3>
+        ) : (
+          <>
+            <div className='photos-center'>
+              {photos.map((photo) => {
+                return <Photo key={photo.id} photo={photo} />;
+              })}
+              {toggleGoToTop && (
+                <button className='go-to-top' onClick={handleGoToTop}>
+                  <FaArrowUp />
+                </button>
+              )}
+            </div>
+            {isLoading && <h2 className='loading'>loading...</h2>}
+          </>
+        )}
       </section>
     </main>
   );
