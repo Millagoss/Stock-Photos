@@ -1,11 +1,15 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { FaSearch, FaArrowUp } from 'react-icons/fa';
+import { FaSearch, FaArrowUp, FaCloudMoon } from 'react-icons/fa';
 import Photo from './Photo';
 
 const clientId = `?client_id=${process.env.REACT_APP_ACCESS_KEY}`;
 
 const mainUrl = `https://api.unsplash.com/photos/`;
 const searchUrl = `https://api.unsplash.com/search/photos/`;
+
+const getTheme = () => {
+  return localStorage.getItem('theme');
+};
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,6 +18,7 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [newImages, setNewImages] = useState(false);
   const [toggleGoToTop, setToggleGoToTop] = useState(false);
+  const [theme, setTheme] = useState(getTheme());
 
   const checkInitValue = useRef(true);
 
@@ -84,6 +89,12 @@ function App() {
     return () => window.removeEventListener('scroll', showArrow);
   }, []);
 
+  useEffect(() => {
+    document.documentElement.className = theme;
+
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
   const handleScroll = () => {
     if (window.scrollY + window.innerHeight >= document.body.scrollHeight - 2) {
       setNewImages(true);
@@ -107,6 +118,14 @@ function App() {
     });
   };
 
+  const toggleDarkMode = () => {
+    if (theme === 'light-theme') {
+      setTheme('dark-theme');
+    } else {
+      setTheme('light-theme');
+    }
+  };
+
   // console.log(photos);
   const inputText = searchTerm;
   return (
@@ -124,6 +143,9 @@ function App() {
             <FaSearch />
           </button>
         </form>
+        <button className='toggle-dark-mode-btn' onClick={toggleDarkMode}>
+          <FaCloudMoon />
+        </button>
       </section>
       <section className='photos'>
         {photos.length === 0 && !isLoading ? (
